@@ -6,7 +6,10 @@ import org.springframework.stereotype.Service;
 
 import com.api.rest.LoginRequest;
 import com.api.rest.RegisterRequest;
+import com.api.rest.SolicitudRequest;
 import com.api.rest.modelo.Cliente;
+import com.api.rest.modelo.Solicitud;
+import com.api.rest.modelo.SolicitudRepository;
 import com.api.rest.modelo.UsuarioRepository;
 
 @Service
@@ -14,6 +17,9 @@ public class AuthService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    
+    @Autowired
+    private SolicitudRepository solicitudRepository;
 
     public void register(RegisterRequest request) {
         Cliente usuario = new Cliente();
@@ -36,4 +42,25 @@ public class AuthService {
 
         return new String("Login exitoso");
     }
+    
+    public void solicitud(SolicitudRequest request) {
+    	// Crear una nueva instancia de SolicitudRequest
+    	Solicitud solicitud = new Solicitud();
+
+    	// Rellenar los campos directamente del objeto `request`
+    	solicitud.setFecha(request.getFecha());
+    	solicitud.setEstado(request.getEstado());
+    	solicitud.setCargo(request.getCargo());
+    	solicitud.setCliente_id(request.getCliente_id());
+    	solicitud.setExperiencia(request.getExperiencia());
+    	solicitud.setTipo_de_contrato(request.getTipo_de_contrato());
+    	solicitud.setNivel_profesion(request.getNivel_profesion());
+    	solicitud.setComentario(request.getComentario());
+    	solicitud.setOtros(request.getOtros());
+
+    	// Guardar la solicitud en el repositorio
+    	solicitudRepository.save(solicitud);
+    }
+    
+    
 }

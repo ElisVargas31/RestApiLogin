@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.rest.LoginRequest;
 import com.api.rest.RegisterRequest;
+import com.api.rest.SolicitudRequest;
 import com.api.rest.services.AuthService;
 
 @RestController
@@ -38,6 +39,12 @@ public class AuthController {
     @GetMapping("/test")
     public ResponseEntity<String> testEndpoint() {
         return ResponseEntity.ok("Servicio montado exitosamente");
+    }
+    
+    @PostMapping("/solicitud")
+    public ResponseEntity<String> solicitud(@RequestBody SolicitudRequest request) {
+        authService.solicitud(request);
+        return ResponseEntity.ok("Solicitud registrado con éxito");
     }
 
 }
