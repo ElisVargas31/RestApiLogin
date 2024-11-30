@@ -43,8 +43,13 @@ public class AuthController {
     
     @PostMapping("/solicitud")
     public ResponseEntity<String> solicitud(@RequestBody SolicitudRequest request) {
-        authService.solicitud(request);
+       try {
+    	authService.solicitud(request);
         return ResponseEntity.ok("Solicitud registrado con éxito");
+       }catch (Exception e) {
+    	   System.out.println(e.getMessage());
+    	   return ResponseEntity.ok(e.getMessage());
+	}
     }
 
 }
