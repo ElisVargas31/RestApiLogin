@@ -11,7 +11,7 @@
     <nav>
         <div class="containerMenu">
             <ul>
-                <li><a href="login.html">Iniciar Sesión</a></li>
+                <li><a href="index.html">Iniciar Sesión</a></li>
                 <li><a href="registro.html">Registrarse</a></li>
             </ul>
         </div>
@@ -19,11 +19,11 @@
 
     <!-- Contenido de la página de registro -->
     <div class="container">
-        <img class="logo" src="imagenes/logo.png"  alt="Descripción de la imagen" width="130" height="75">
+        <img class="logo" src="imagenes/logo.png" alt="Descripción de la imagen" width="130" height="75">
         <h3>Formulario de Registro</h3>
-        <form method="post" action="http://localhost:8080/Incobis/incobisServlet">
-            <input type="hidden" name="action" value="registrar"> <!-- Campo oculto para la acción -->
-            
+        
+        <!-- Formulario de registro -->
+        <form id="registroForm">
             <label for="nombreORazonSocial">Nombre o Razón Social:</label>
             <input type="text" id="nombreORazonSocial" name="nombreORazonSocial" required>
 
@@ -53,18 +53,36 @@
             form.addEventListener('submit', function (event) {
                 event.preventDefault(); // Evita el envío por defecto del formulario
 
-                // Crea un objeto FormData para recoger los datos del formulario
-                const formData = new FormData(form);
+                // Recoge los datos del formulario
+                const formData = {
+                    nombreORazonSocial: document.getElementById("nombreORazonSocial").value,
+                    apellido: document.getElementById("apellido").value,
+                    correoElectronico: document.getElementById("email").value,
+                    telefono: document.getElementById("telefono").value,
+                    nit: document.getElementById("nit").value,
+                    password: document.getElementById("password").value
+                };
 
-                // Realiza la petición POST al servlet
-                fetch('http://localhost:8080/Incobis/incobisServlet', {
+                // Realiza la solicitud POST al servicio en Heroku
+                fetch('https://incobisproyect-2902521e661a.herokuapp.com/api/register', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData) // Convierte el objeto en JSON
                 })
                 .then(response => response.text()) // Espera la respuesta en texto
                 .then(data => {
                     console.log("Respuesta del servidor:", data); // Muestra la respuesta en la consola
                     alert(data); // Muestra la respuesta en un alert
+
+                    // Verifica si la respuesta es el texto esperado
+                    if (data === "Usuario registrado con éxito") {
+                        window.location.href = "index.html"; // Redirige a la página de login si el registro es exitoso
+                    } else {
+                        alert("Hubo un problema con el registro. Inténtalo nuevamente.");
+                    }
+
                     form.reset(); // Resetea el formulario después de enviar
                 })
                 .catch(error => {
@@ -76,4 +94,3 @@
     </script>
 </body>
 </html>
-
