@@ -3,38 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Página de Login</title>
-    <!-- Ruta correcta del archivo CSS -->
+    <title>Página de Login</title>
     <link rel="stylesheet" href="registro.css">
-    
 </head>
 <body>
-    <nav> 
-    <!-- Menú de navegación -->
-    <div class="containerMenu">
-        <ul>
-            <li><a href="login.html">Iniciar Sesión</a></li>
-            <li><a href="registro.html">Registrarse</a></li>
-        </ul>
-    </div>
-</nav>
+    <nav>
+        <div class="containerMenu">
+            <ul>
+                <li><a href="login.html">Iniciar Sesión</a></li>
+                <li><a href="registro.html">Registrarse</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <!-- Contenido de la página de login -->
     <div class="container">
-        <img  class="logo" src="imagenes/logo.png" alt="Descripción de la imagen" width="130" height="75">
+        <img class="logo" src="imagenes/logo.png" alt="Descripción de la imagen" width="130" height="75">
         <h3>Inicio de Sesión</h3>
-       <form method="post" action="http://localhost:8080/Incobis/incobisServlet">
-    <input type="hidden" name="action" value="iniciarSesion"> <!-- Acción para el servlet -->
-    <label for="username">Correo:</label>
-    <input type="text" id="correo" name="correo" required>
+        
+        <!-- Formulario de Login -->
+        <form id="loginForm">
+            <label for="username">Correo:</label>
+            <input type="text" id="email" name="email" required>
 
-    <label for="password">Contraseña:</label>
-    <input type="password" id="password" name="password" required>
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
 
-    <button type="submit">Ingresar</button> <!-- Elimina el onclick para evitar redirección prematura -->
-    <a href="olvide_contrase.html">¿Olvidó su contraseña?</a>
-</form>
+            <button type="submit">Ingresar</button>
+            <a href="olvide_contrase.html">¿Olvidó su contraseña?</a>
+        </form>
     </div>
-    
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Evita el envío tradicional del formulario
+
+            // Recoger los datos del formulario
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            // Crear el objeto de datos a enviar
+            const loginData = {
+                email: email,
+                password: password
+            };
+
+            // Enviar la solicitud POST a la API
+            fetch("https://incobisproyect-2902521e661a.herokuapp.com/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(loginData) // Convertir el objeto a JSON
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirigir a otra página si la autenticación es exitosa
+                    window.location.href = "pagina_despues_login.html"; // Cambia la URL según lo que necesites
+                } else {
+                    // Mostrar un mensaje de error si la autenticación falla
+                    alert("Credenciales incorrectas, por favor intenta nuevamente.");
+                }
+            })
+            .catch(error => {
+                console.error("Error en la solicitud:", error);
+                alert("Hubo un problema al procesar tu solicitud. Intenta nuevamente.");
+            });
+        });
+    </script>
 </body>
 </html>
