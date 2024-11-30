@@ -5,32 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Solicitud</title>
     <style>
-        body  
- /* Estilo del menú de navegación */
- .containerMenu {
-    width: 100%;
-    background-color: #002c44;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    display: flex; /* Habilita el uso de flexbox */
-    align-items: center; /* Alinea verticalmente los elementos */
-    font-family: 'Arial', sans-serif; /* Cambia el tipo de letra */
-}
-
-.logo2 {
-    border: 2px solid #002c44; /* Color del borde */
-    border-radius: 30px; /* Bordes redondeados, opcional */
-    padding: 5px; /* Espacio entre la imagen y el borde */
-}
-
-.menu-items {
-    list-style-type: none; /* Elimina los puntos de la lista */
-    margin-left: 820px;
-    padding: 5px;
-}
-
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .containerMenu {
+            width: 100%;
+            background-color: #002c44;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+        .logo2 {
+            border: 2px solid #002c44;
+            border-radius: 30px;
+            padding: 5px;
+        }
+        .menu-items {
+            list-style-type: none;
+            margin-left: 820px;
+            padding: 5px;
+        }
 
         .container {
             width: 40%;
@@ -40,16 +37,18 @@
             background-color: #fffbfb;
             padding: 80px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-            font-family: 'Arial', sans-serif;
         }
+
         h2 {
             text-align: center;
             margin-top: 15px;
         }
+
         label {
             display: block;
             margin-bottom: 10px;
         }
+
         input[type="text"], input[type="number"], select, textarea {
             width: 100%;
             padding: 10px;
@@ -57,27 +56,29 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        input[type="submit"] {
 
+        input[type="submit"] {
             color: white;
             padding: 10px 15px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
+
         input[type="submit"]:hover {
             background-color: #a1b0b6;
         }
-        /* Personalizar el tamaño de los cuadros de comentario */
+
         .otros-comentarios textarea {
             width: 50%;
             height: 30px;
         }
+
         .form-group2 {
             width: 80%;
             height: 50px;
         }
-        /* Estilos para el botón */
+
         .btn-submit {
             padding: 10px 20px;
             background-color: #85d8fc;
@@ -86,57 +87,110 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 90px; /* Espacio encima del botón */
+            margin-top: 90px;
         }
 
         .btn-submit:hover {
-            background-color: #bfc0c0
-          }
+            background-color: #bfc0c0;
+        }
     </style>
-        <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mostrar/ocultar el campo de comentarios si el usuario elige "otros" en el cargo
+            const cargoSelect = document.getElementById('cargo');
+            const comentarioArea = document.getElementById('comentarioArea');
+            cargoSelect.addEventListener('change', function () {
+                if (cargoSelect.value === 'otros') {
+                    comentarioArea.style.display = 'block';
+                } else {
+                    comentarioArea.style.display = 'none';
+                }
+            });
+
+            // Manejo del envío del formulario
+            const form = document.getElementById('myForm');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+
+                const formData = {
+                    fecha: new Date().toISOString().split('T')[0], // Fecha actual en formato yyyy-mm-dd
+                    estado: 'Pendiente',
+                    cargo: document.getElementById('cargo').value,
+                    cliente_id: 19, // Valor estático (puedes modificarlo si es necesario)
+                    experiencia: document.getElementById('experiencia').value,
+                    tipo_de_contrato: document.getElementById('tipo-contrato').value,
+                    nivel_profesion: document.getElementById('profesion').value,
+                    comentario: document.getElementById('comentario').value,
+                    otros: document.getElementById('comentarioAreaTexto') ? document.getElementById('comentarioAreaTexto').value : ''
+                };
+
+                // Realizar la solicitud POST a la API de Heroku
+                fetch('https://incobisproyect-2902521e661a.herokuapp.com/api/solicitud', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData) // Enviar los datos como JSON
+                })
+                .then(response => response.text()) // Convertir la respuesta a texto
+                .then(data => {
+                    alert(data); // Mostrar la respuesta en un alert
+                    if (data === 'Solicitud registrada con éxito') {
+                        window.location.href = 'incobis.html'; // Redirigir a la página de inicio si es exitoso
+                    } else {
+                        alert('Hubo un problema al registrar la solicitud.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al realizar la solicitud:', error);
+                    alert('Hubo un error al registrar la solicitud.');
+                });
+            });
+        });
+    </script>
 </head>
 <body>
     <header>
         <nav>
             <div class="containerMenu">
-                <img class="logo2" src="imagenes/logo.png"  alt="logo de incobis" width="130" height="75">
-                <ul class="menu-items"> 
-                    <a type="button" class="btn-submit" onclick="location.href='incobis.html'">Atras</a>
-   
+                <img class="logo2" src="imagenes/logo.png" alt="logo de incobis" width="130" height="75">
+                <ul class="menu-items">
+                    <a class="btn-submit" onclick="location.href='incobis.html'">Atrás</a>
                 </ul>
-            
             </div>
         </nav>
     </header>
+
     <div class="container">
         <h2>Formulario de Solicitud</h2>
-        <form  id="myForm" method="post" action="http://localhost:8080/Incobis/incobisServlet">
-             <input type="hidden" name="action" value="solicitud"> 
+        <form id="myForm">
+            <input type="hidden" name="action" value="solicitud">
+
             <!-- Experiencia -->
             <div class="form-group">
                 <label for="experiencia">Experiencia (en meses):</label>
                 <input type="number" id="experiencia" name="experiencia" min="0" max="1000000" required>
             </div>
 
-            
-
-           <!-- Área de Aseo -->
-        <div class="form-group">
+            <!-- Área de Aseo -->
+            <div class="form-group">
                 <label for="cargo">Cargo:</label>
                 <select id="cargo" name="cargo" required>
                     <option value="operariolimpieza">Operario de Limpieza</option>
-                    <option value="tecnicosaneamiento">Tecnico de saneamiento</option>
+                    <option value="tecnicosaneamiento">Técnico de Saneamiento</option>
                     <option value="supervisoraseo">Supervisor de Aseo</option>
-                    <option value="operarioderramequimico">Operario de derrames quimicos o peligrosos</option>
-                    <option value="operariocontrolplaga">Operario de control de plagas</option>
+                    <option value="operarioderramequimico">Operario de Derrames Químicos</option>
+                    <option value="operariocontrolplaga">Operario de Control de Plagas</option>
                     <option value="operariodeesterilizacion">Contrato por Obra</option>
+                    <option value="otros">Otros</option>
                 </select>
             </div>
-<!-- Comentario para 'otros' en área -->
-<div class="otros-comentarios" id="comentarioArea" style="display: none;">
-    <label for="comentarioAreaTexto">Otros:</label>
-    <textarea id="comentarioAreaTexto" name="comentarioArea"></textarea>
-</div>
+
+            <!-- Comentario para 'otros' en área -->
+            <div class="otros-comentarios" id="comentarioArea" style="display: none;">
+                <label for="comentarioAreaTexto">Otros:</label>
+                <textarea id="comentarioAreaTexto" name="comentarioArea"></textarea>
+            </div>
 
             <!-- Tipo de Contrato -->
             <div class="form-group contrato">
@@ -150,11 +204,11 @@
 
             <!-- Profesión -->
             <div class="form-group">
-                <label for="profesion">Nivel profesional:</label>
+                <label for="profesion">Nivel Profesional:</label>
                 <select id="profesion" name="profesion" required>
                     <option value="tecnico">Técnico</option>
                     <option value="tecnologo">Tecnólogo</option>
-                    <option value="experiencia">Que cuente con la experiencia certificada</option>
+                    <option value="experiencia">Con Experiencia Certificada</option>
                 </select>
             </div>
 
@@ -163,18 +217,10 @@
                 <label for="comentario">Comentario:</label>
                 <textarea id="comentario" name="comentario" rows="4" placeholder="Escribe aquí tus comentarios..." required></textarea>
             </div>
-          <button type="submit" class="btn-submit" onclick="location.href='incobis.html'">Enviar Solicitud</button>
-            <!-- Botón de Enviar Solicitud -->
-            
-    
+
+            <button type="submit" class="btn-submit">Enviar Solicitud</button>
         </form>
     </div>
-    
-  
-
-  
 </body>
-
-    
 </html>
 
