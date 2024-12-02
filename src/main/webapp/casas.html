@@ -134,8 +134,8 @@
                 })
                 .then(response => response.text()) // Convertir la respuesta a texto
                 .then(data => {
-                    alert(data); // Mostrar la respuesta en un alert
-                    if (data === 'Solicitud registrada con éxito') {
+                    if (data.trim() === 'Solicitud registrado con éxito') {
+                        alert('Solicitud registrada con éxito.');
                         window.location.href = 'incobis.html'; // Redirigir a la página de inicio si es exitoso
                     } else {
                         alert('Hubo un problema al registrar la solicitud.');
@@ -153,8 +153,7 @@
     <header>
         <nav>
             <div class="containerMenu">
-                <img class="logo2" src="https://drive.google.com/uc?export=view&id=1i4gHUrChc_4cgUzrEJzLNF-PfFI-4sBu
-" alt="logo de incobis" width="130" height="75">
+                <img class="logo2" src="https://drive.google.com/uc?export=view&id=1i4gHUrChc_4cgUzrEJzLNF-PfFI-4sBu" alt="logo de incobis" width="130" height="75">
                 <ul class="menu-items">
                     <a class="btn-submit" onclick="location.href='incobis.html'">Atrás</a>
                 </ul>
@@ -182,7 +181,6 @@
                     <option value="supervisoraseo">Supervisor de Aseo</option>
                     <option value="operarioderramequimico">Operario de Derrames Químicos</option>
                     <option value="operariocontrolplaga">Operario de Control de Plagas</option>
-                    <option value="operariodeesterilizacion">Contrato por Obra</option>
                     <option value="otros">Otros</option>
                 </select>
             </div>
