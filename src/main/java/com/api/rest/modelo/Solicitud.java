@@ -14,7 +14,7 @@ public class Solicitud{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Generación automática del ID
-    private int id;
+    private int id_solicitud;
 
     @Column(nullable = false)
     private String fecha;
@@ -44,13 +44,7 @@ public class Solicitud{
     private String otros;
 
     // Getters y Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+   
 
     public String getFecha() {
         return fecha;

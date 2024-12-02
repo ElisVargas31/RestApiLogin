@@ -51,7 +51,7 @@ public class AuthService {
     	solicitud.setFecha(request.getFecha());
     	solicitud.setEstado(request.getEstado());
     	solicitud.setCargo(request.getCargo());
-    	solicitud.setCliente_id(request.getCliente_id());
+    	solicitud.setCliente_id(20);
     	solicitud.setExperiencia(request.getExperiencia());
     	solicitud.setTipo_de_contrato(request.getTipo_de_contrato());
     	solicitud.setNivel_profesion(request.getNivel_profesion());
